@@ -1,0 +1,75 @@
+<resources>
+    <string name="app_name">XBIZTASk2</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="ok">OK</string>
+    <string name="open_settings">Open Settings</string>
+    <string name="cancel_">Cancel</string>
+    <string name="err_camera_permission" translatable="false">Camera permission needed. Please allow in App Settings for additional functionality.</string>
+    <string name="err_write_permission" translatable="false">Write permission needed. Please allow in App Settings for additional functionality.</string>
+    <string name="err_generic_permission">One or more required permission are missing. Please grant
+        access to all permissions from App Settings.
+    </string>
+    <string name="raw_text">
+S/ Paul Anthony Cheenappilly
+C-1304,. BLDG NO-2 MHADA TOWER
+CHIKUWADI
+BORIVALU WEST
+1 Aadhaar is a proof of identity, not of citizenship.
+1 To establish identity, authenticate online.
+1 This is electronically generated letter.
+OPP NES MART
+   .
+Mumbai
+Borivali West
+Mumbai Maharashtra - 400092
+8451894983
+
+   .
+I Aadhaar is valid throughout the country.
+Signature valid
+OQUEE CATION
+AUT HORTOINDIA 04
+Date: 201 6 1102:31
+IST
+I Aadhaar will be helpful in availing Government
+and Non-Government services in future.
+   / Your Aadhaar No. :
+9247 98B8 2I99 11111 |||
+VID : 9156 124435185460
+ ,
+
+Unique Identification Authority of India
+
+Government of India
+
+
+Rajan Paul Cheenappilly
+ /DOB: 26/03/1996
+/ MALE
+:
+S/0   , -104,.  -2
+ , ,   ,  ,
+, ,
+- 400092 Aadhaar No. :
+9247 98B8 ZI9911111
+Address:
+S/O Paul Anthony Cheenappilly, C-1304,.
+BLDG NO-2 MHADA TOWER,
+CHIKUWADI, OPP NES MART, BORIVALI
+WEST, Mumbai, Mumbai,
+Maharashtra - 400092
+9147 9938 2I89111111111
+VID: 9156 1244 3518 5460
+ ,
+9147 9938 2I89 11111111
+VID: 9156 1244 3518 5460
+1947
+help o uidai.gov.in
+https://www.uidai.gov.in
+QR Code with Photograph
+QR Code with Photograph
+Generation Date: 14/07/2016
+Download Date: 20/09/2019</string>
+</resources>

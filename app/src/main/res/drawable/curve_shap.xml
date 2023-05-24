@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c)
+  ~ 25/2/21 6:25 PM
+  ~ 2021
+  ~ omprakashtiwari
+  -->
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <solid android:color="#fff" />
+
+    <stroke
+        android:width="2dp"
+        android:color="#ffffff" />
+
+    <corners
+        android:bottomLeftRadius="20dp"
+        android:bottomRightRadius="20dp"
+        android:topLeftRadius="20dp"
+        android:topRightRadius="20dp" />
+
+</shape>

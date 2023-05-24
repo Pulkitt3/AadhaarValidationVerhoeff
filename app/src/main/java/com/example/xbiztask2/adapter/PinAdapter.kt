@@ -9,8 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.xbiztask2.R
 import com.example.xbiztask2.model.PostOfficeItem
 
-class PinAdapter(var list: List<PostOfficeItem>) :
-    RecyclerView.Adapter<PinAdapter.MyViewHolder>() {
+class PinAdapter(var list: List<PostOfficeItem>) : RecyclerView.Adapter<PinAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view: View = LayoutInflater.from(parent.context)
@@ -46,13 +45,13 @@ class PinAdapter(var list: List<PostOfficeItem>) :
             holder.tv_branch_value.visibility = View.VISIBLE
             holder.tv_branch_value.text = data.branchType.toString()
         }
-        if (TextUtils.isEmpty(data?.deliveryStatus.toString())) {
+        if (TextUtils.isEmpty(data.deliveryStatus.toString())) {
             holder.tv_delivery.visibility = View.GONE
             holder.tv_delivery_value.visibility = View.GONE
         } else {
             holder.tv_delivery.visibility = View.VISIBLE
             holder.tv_delivery_value.visibility = View.VISIBLE
-            holder.tv_delivery_value.text = data?.deliveryStatus.toString()
+            holder.tv_delivery_value.text = data.deliveryStatus.toString()
 
         }
         holder.tv_circle_district_value.text =
@@ -73,21 +72,13 @@ class PinAdapter(var list: List<PostOfficeItem>) :
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var tv_name: TextView = itemView.findViewById(R.id.tv_name)
         var tv_name_value: TextView = itemView.findViewById(R.id.tv_name_value)
-        var tv_description: TextView = itemView.findViewById(R.id.tv_description)
-        var tv_description_value: TextView = itemView.findViewById(R.id.tv_description_value)
         var tv_branch: TextView = itemView.findViewById(R.id.tv_branch)
         var tv_branch_value: TextView = itemView.findViewById(R.id.tv_branch_value)
         var tv_delivery: TextView = itemView.findViewById(R.id.tv_delivery)
         var tv_delivery_value: TextView = itemView.findViewById(R.id.tv_delivery_value)
-        var tv_circle_district: TextView = itemView.findViewById(R.id.tv_circle_district)
-        var tv_circle_district_value: TextView =
-            itemView.findViewById(R.id.tv_circle_district_value)
-        var tv_division_region: TextView = itemView.findViewById(R.id.tv_division_region)
-        var tv_division_region_value: TextView =
-            itemView.findViewById(R.id.tv_division_region_value)
-        var tv_block_state: TextView = itemView.findViewById(R.id.tv_block_state)
+        var tv_circle_district_value: TextView = itemView.findViewById(R.id.tv_circle_district_value)
+        var tv_division_region_value: TextView = itemView.findViewById(R.id.tv_division_region_value)
         var tv_block_state_value: TextView = itemView.findViewById(R.id.tv_block_state_value)
-        var tv_country_pin: TextView = itemView.findViewById(R.id.tv_country_pin)
         var tv_country_pin_value: TextView = itemView.findViewById(R.id.tv_country_pin_value)
     }
 }

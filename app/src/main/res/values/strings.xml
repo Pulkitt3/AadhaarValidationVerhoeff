@@ -72,4 +72,9 @@ QR Code with Photograph
 QR Code with Photograph
 Generation Date: 14/07/2016
 Download Date: 20/09/2019</string>
+
+    <string name="permission_required">Permission Required</string>
+    <string name="permission_message">You must grant permission to access camera and external storage to run this application.</string>
+    <string name="permission_warning">All permissions are required.</string>
+    <string name="yes">Yes</string>
 </resources>

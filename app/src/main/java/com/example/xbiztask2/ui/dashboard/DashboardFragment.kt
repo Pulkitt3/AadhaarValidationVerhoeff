@@ -12,11 +12,13 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -25,6 +27,7 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.example.xbiztask2.R
 import com.example.xbiztask2.databinding.FragmentDashboardBinding
 import me.echodev.resizer.Resizer
 import java.io.*
@@ -35,10 +38,10 @@ import java.util.*
 class DashboardFragment : Fragment() {
 
     private val PERMISSION_REQUEST_CODE = 1
-    private val REQUIRED_PERMISSIONS = arrayOf(
-        Manifest.permission.CAMERA,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE
-    )
+
+    private val neededPermissions = arrayOf(Manifest.permission.CAMERA,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
     private val REQUEST_IMAGE_SELECTION = 2
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
@@ -49,6 +52,9 @@ class DashboardFragment : Fragment() {
     private var capturedFirstImage = false
     private var getFirstImage = false
 
+    companion object {
+        const val REQUEST_CODE = 100
+    }
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
@@ -61,9 +67,31 @@ class DashboardFragment : Fragment() {
 
         binding.cvCamera.setOnClickListener { showImageSelectionDialog(true) }
         binding.cvGallery.setOnClickListener { showImageSelectionDialog(false) }
-        checkPermissions()
+        val result = checkPermission()
+        if (result) {
+            binding.showPermissionMsg.visibility = View.GONE
+            binding.settingsButton.visibility = View.GONE
+            binding.llButtons.visibility = View.VISIBLE
+
+        } else {
+            binding.showPermissionMsg.visibility = View.VISIBLE
+            binding.settingsButton.visibility = View.VISIBLE
+            binding.llButtons.visibility = View.GONE
+        }
+
+        binding.settingsButton.setOnClickListener {
+            openAppSettings()
+        }
         return root
     }
+
+    private fun openAppSettings() {
+        val appSettingsIntent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        val uri = Uri.fromParts("package", requireActivity().packageName, null)
+        appSettingsIntent.data = uri
+        startActivity(appSettingsIntent)
+    }
+
 
     lateinit var builder: AlertDialog.Builder
     lateinit var alert: AlertDialog
@@ -470,36 +498,86 @@ class DashboardFragment : Fragment() {
         return sampleSize
     }
 
-    private fun checkPermissions() {
-        val missingPermissions = REQUIRED_PERMISSIONS.filter {
-            ContextCompat.checkSelfPermission(requireContext(),
-                it) != PackageManager.PERMISSION_GRANTED
-        }
+    private fun checkPermission(): Boolean {
+        val currentAPIVersion = Build.VERSION.SDK_INT
+        if (currentAPIVersion >= Build.VERSION_CODES.M) {
+            val permissionsNotGranted = ArrayList<String>()
+            for (permission in neededPermissions) {
+                if (ContextCompat.checkSelfPermission(
+                        requireContext(),
+                        permission
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    permissionsNotGranted.add(permission)
+                }
+            }
+            if (permissionsNotGranted.size > 0) {
+                var shouldShowAlert = false
+                for (permission in permissionsNotGranted) {
+                    shouldShowAlert = ActivityCompat.shouldShowRequestPermissionRationale(
+                        requireActivity(),
+                        permission)
+                }
 
-        if (missingPermissions.isNotEmpty()) {
-            ActivityCompat.requestPermissions(requireActivity(),
-                missingPermissions.toTypedArray(),
-                PERMISSION_REQUEST_CODE)
-        } else {
-            // Permissions already granted, proceed with your logic
-            // ...
+                val arr = arrayOfNulls<String>(permissionsNotGranted.size)
+                val permissions = permissionsNotGranted.toArray(arr)
+                if (shouldShowAlert) {
+                    showPermissionAlert(permissions)
+                } else {
+                    requestPermissions(permissions)
+                }
+                return false
+            }
         }
+        return true
+    }
+
+    private fun showPermissionAlert(permissions: Array<String?>) {
+        val alertBuilder = AlertDialog.Builder(requireContext())
+        alertBuilder.setCancelable(true)
+        alertBuilder.setTitle(R.string.permission_required)
+        alertBuilder.setMessage(R.string.permission_message)
+        alertBuilder.setPositiveButton(R.string.yes) { _, _ -> requestPermissions(permissions) }
+        val alert = alertBuilder.create()
+        alert.show()
+    }
+
+    private fun requestPermissions(permissions: Array<String?>) {
+        ActivityCompat.requestPermissions(requireActivity(), permissions, REQUEST_CODE)
     }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
-        permissions: Array<out String>,
+        permissions: Array<String>,
         grantResults: IntArray,
     ) {
-        if (requestCode == PERMISSION_REQUEST_CODE) {
-            val grantedPermissions = grantResults.all { it == PackageManager.PERMISSION_GRANTED }
-            if (grantedPermissions) {
-                // All permissions granted, proceed with your logic
-                // ...
-            } else {
-                // Permissions not granted, handle accordingly
-                // ...
+        when (requestCode) {
+            REQUEST_CODE -> {
+                for (result in grantResults) {
+                    if (result == PackageManager.PERMISSION_DENIED) {
+                        Toast.makeText(
+                            requireContext(),
+                            R.string.permission_warning,
+                            Toast.LENGTH_LONG
+                        ).show()
+                        binding.showPermissionMsg.visibility = View.VISIBLE
+                        binding.settingsButton.visibility = View.VISIBLE
+                        binding.llButtons.visibility = View.GONE
+
+                        return
+                    }
+                }
+            }
+
+            else -> {
+
+                binding.showPermissionMsg.visibility = View.GONE
+                binding.settingsButton.visibility = View.GONE
+                binding.llButtons.visibility = View.VISIBLE
+
             }
         }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }
